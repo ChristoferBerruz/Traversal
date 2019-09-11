@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 public class EdgeList {
     ArrayList<Integer>[] nodes;
     int n_nodes;
@@ -12,6 +11,8 @@ public class EdgeList {
             nodes[i] = new ArrayList<Integer>();
         }
     }
+
+
     public EdgeList(){
         this.nodes = new ArrayList[10];
         this.n_nodes = 10;
@@ -19,6 +20,7 @@ public class EdgeList {
             nodes[i] = new ArrayList<Integer>();
         }
     }
+
 
     /**
      * Adding edges to nodes in the EdgeList
@@ -46,6 +48,8 @@ public class EdgeList {
             throw new Exception("This node or edge does not exist in the graph");
         }
     }
+
+
     public String toString(){
         StringBuilder edgelist = new StringBuilder();
         for(int i = 0; i < n_nodes; i++){
