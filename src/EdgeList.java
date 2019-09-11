@@ -4,15 +4,13 @@ public class EdgeList {
     int n_nodes;
     public EdgeList(int n_nodes){
         //Creating an array of ArrayLists
-        this.nodes = new ArrayList[n_nodes];
-        this.n_nodes = n_nodes;
+        this.nodes = new ArrayList[n_nodes+1]; //Just to be consistent with vertices = [1,n]
+        this.n_nodes = n_nodes+1;
         //Initializing each location
-        for(int i = 0; i < n_nodes; i++){
+        for(int i = 0; i < this.n_nodes; i++){
             nodes[i] = new ArrayList<Integer>();
         }
     }
-
-
     public EdgeList(){
         this.nodes = new ArrayList[10];
         this.n_nodes = 10;
@@ -21,11 +19,10 @@ public class EdgeList {
         }
     }
 
-
     /**
      * Adding edges to nodes in the EdgeList
-     * @param node 0 <= node < n_nodes for valid indexing
-     * @param edge 0<= edge < n_nodes for valid insertion
+     * @param node 1 <= node < n_nodes for valid indexing
+     * @param edge 1 <= edge < n_nodes for valid insertion
      * @throws Exception when either the node or the edge does not exist in the graph
      */
     public void addEdge(int node, Integer edge) throws Exception{
@@ -48,11 +45,9 @@ public class EdgeList {
             throw new Exception("This node or edge does not exist in the graph");
         }
     }
-
-
     public String toString(){
         StringBuilder edgelist = new StringBuilder();
-        for(int i = 0; i < n_nodes; i++){
+        for(int i = 1; i < n_nodes; i++){
             edgelist.append(i + " -> ");
             int n_edges = nodes[i].size();
             for(int j = 0; j < n_edges; j++){

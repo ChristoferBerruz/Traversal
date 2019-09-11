@@ -4,7 +4,7 @@ import java.util.Queue;
 
 public class Traversal {
     ArrayList<Integer> result = new ArrayList<>();
-    int[] visited = new int[1];
+    int[] visited;
     EdgeList edgeList;
     public Traversal(EdgeList edgeList){
         visited = new int[edgeList.n_nodes];

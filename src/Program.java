@@ -1,53 +1,50 @@
-import java.util.*;
+/**
+ * This program is user input driven. We might develop the File Chooser implementation.
+ * In the meantime, the file has to be in the current folder of the project.
+ *
+ * Please note that vertex start from 1 to n inclusive.
+ */
+
+import javax.swing.JFileChooser;
+import java.util.ArrayList;
+import java.io.File;
 import java.io.FileReader;
+import java.util.Scanner;
 
 public class Program {
+    public static Scanner user;
+    public static Scanner in;
+    public static EdgeList edgeList;
+    public static Traversal traversal;
     public static void main(String[] args) {
         Menu();
     }
 
     public static void Menu() {
         int user_Choice = 0;
-        Scanner in = new Scanner(System.in);
+        user = new Scanner(System.in);
         System.out.println("Program 1: Graphs");
-        String fname = "test.txt";
-        EdgeList edgeList = getEdgeList(fname);
-        Traversal traversal = new Traversal(edgeList);
+        System.out.println("-----------------");
+        System.out.print("Please enter a filename: ");
+        String fname = user.nextLine().trim();
+        edgeList = getEdgeList(fname);
+        traversal = new Traversal(edgeList);
         do {
-            System.out.println("\n"
-                    + "1. Read and Print the graph" + "\n"
-                    + "2. DFS(Depth First Search) " + "\n"
-                    + "3. BFS(Breadth First Search) " + "\n"
-                    + "4. Exit\n");
-            user_Choice = in.nextInt();
+            System.out.println(getMenu());
+            user_Choice = user.nextInt();
             switch (user_Choice) {
                 case 1:
-                    System.out.println(edgeList);
+                    System.out.println(edgeList.toString());
                     break;
                 case 2:
-                    System.out.println("Starting vertex: ");
-                    int vertex = in.nextInt();
-                    if (-1 < vertex && vertex < edgeList.n_nodes) {
-                        ArrayList<Integer> result = traversal.dfs(vertex);
-                        System.out.println(result);
-                        traversal.clear();
-                    } else {
-                        System.out.println("Not a valid vertex!");
-                    }
+                    DFS();
                     break;
                 case 3:
-                    System.out.println("Starting vertex: ");
-                    int vertex1 = in.nextInt();
-                    if (-1 < vertex1 && vertex1 < edgeList.n_nodes) {
-                        ArrayList<Integer> result = traversal.bfs(vertex1);
-                        System.out.println(result);
-                        traversal.clear();
-                    } else {
-                        System.out.println("Not a valid vertex!");
-                    }
+                    BFS();
                     break;
                 case 4:
                     System.out.println("Thank You and have a great day!!!");
+                    break;
             }
         }while (user_Choice !=  4);
     }
@@ -56,29 +53,29 @@ public class Program {
      * Generates an EdgeList given a file name
      * @param fname is in the following format:
      *              n_nodes
-     *              node_0 edge_0 ... edge_j
+     *              edge_1 ... edge_j
      *              .
      *              .
      *              .
-     *              node_(n_nodes - 1) edge_0 ... edge_m
+     *              edge_1 ... edge_m
      * @return EdgeList
      */
     public static EdgeList getEdgeList(String fname){
-        Scanner in = new Scanner(System.in);
-        try {
+        in = new Scanner(System.in);
+        try{
             in = new Scanner(new FileReader(fname));
-        } catch(Exception e){
+        }catch(Exception e){
             System.out.println(e);
         }
         int n_nodes = Integer.parseInt(in.nextLine().trim()); // First line guaranteed to be n_nodes
         EdgeList edgeList = new EdgeList(n_nodes);
-        for(int i = 0; i < n_nodes; i++){
+        for(int i = 1; i < n_nodes+1; i++){
             String line = in.nextLine();
             String[] tokens = line.split(" ");
             try{
-                Integer n = Integer.parseInt(tokens[0]);
+                Integer.parseInt(tokens[0]); // This raises an exception when char is newline
                 processLine(i, tokens, edgeList);
-            }catch (Exception e){
+            }catch(Exception e){
 
             }
         }
@@ -100,6 +97,40 @@ public class Program {
                     System.out.println(e);
                 }
             }
+        }
+    }
+
+
+    public static String getMenu(){
+        String menu = "\n"
+                + "1. Read and Print the graph" + "\n"
+                + "2. DFS(Depth First Search) " + "\n"
+                + "3. BFS(Breadth First Search) " + "\n"
+                + "4. Exit\n";
+        return menu;
+    }
+
+    public static void DFS(){
+        System.out.println("Starting vertex: ");
+        int vertex = user.nextInt();
+        if (0 < vertex && vertex < edgeList.n_nodes) {
+            ArrayList<Integer> result = traversal.dfs(vertex);
+            System.out.println(result);
+            traversal.clear();
+        } else {
+            System.out.println("Not a valid vertex!");
+        }
+    }
+
+    public static void BFS(){
+        System.out.println("Starting vertex: ");
+        int vertex1 = user.nextInt();
+        if (0 < vertex1 && vertex1 < edgeList.n_nodes) {
+            ArrayList<Integer> result = traversal.bfs(vertex1);
+            System.out.println(result);
+            traversal.clear();
+        } else {
+            System.out.println("Not a valid vertex!");
         }
     }
 }
